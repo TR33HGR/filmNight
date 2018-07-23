@@ -6,15 +6,92 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/hostButt"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/genreTextPre"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:onClick="openEventCreate"
-        android:text="@string/hostEventButt"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/searchText_alt"
+        app:layout_constraintStart_toStartOf="@+id/genreSearchQ"
+        app:layout_constraintTop_toBottomOf="@+id/genreSearchQ" />
+
+    <TextView
+        android:id="@+id/genreTextPost"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/searchGenreTag"
+        app:layout_constraintBottom_toBottomOf="@+id/genreSearch"
+        app:layout_constraintEnd_toEndOf="@+id/genreSearchQ"
+        app:layout_constraintTop_toTopOf="@+id/genreSearch"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <SearchView
+        android:id="@+id/genreSearch"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/genreTextPre"
+        app:layout_constraintEnd_toStartOf="@+id/genreTextPost"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/genreTextPre"
+        app:layout_constraintTop_toTopOf="@+id/genreTextPre"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/genreSearchQ"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/searchGenreQ"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filmText" />
+
+    <TextView
+        android:id="@+id/filmSearchQ"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/searchFilmQ"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/filmText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/searchText"
+        app:layout_constraintStart_toStartOf="@+id/filmSearchQ"
+        app:layout_constraintTop_toBottomOf="@+id/filmSearchQ" />
+
+    <SearchView
+        android:id="@+id/filmSearch"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/filmText"
+        app:layout_constraintEnd_toEndOf="@+id/filmSearchQ"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/filmText"
+        app:layout_constraintTop_toTopOf="@+id/filmText"
+        app:layout_constraintVertical_bias="0.0" />
+
 </android.support.constraint.ConstraintLayout>

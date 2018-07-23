@@ -15,10 +15,5 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    //Called when 'Host' button is pressed
-    public void openEventCreate(View view){
 
-        Intent openEventCreateAct = new Intent(this, EventCreateActivity.class);
-        startActivity(openEventCreateAct);
-    }
 }

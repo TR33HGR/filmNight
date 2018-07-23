@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Film Night</string>
-    <string name="hostEventButt">Host</string>
-    <string name="filmSearchDefualt">Search film data</string>
+
+    <string name="searchFilmQ">What film do you want to watch?</string>
+    <string name="searchGenreQ">If you don\'t have a specific film in mind, what genre of film do you want to watch?</string>
+    <string name="searchText">I want to watch </string>
+    <string name="searchText_alt">I want to watch a(n) </string>
+    <string name="searchGenreTag"> film!</string>
 </resources>
