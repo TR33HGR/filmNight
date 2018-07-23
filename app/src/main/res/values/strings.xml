@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Film Night</string>
     <string name="hostEventButt">Host</string>
+    <string name="filmSearchDefualt">Search film data</string>
 </resources>
