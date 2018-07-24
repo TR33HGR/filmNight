@@ -12,7 +12,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONObject;
 
 public class FilmFetcher {
 
@@ -60,12 +63,12 @@ public class FilmFetcher {
 
         String url = API_URL + command + query + API_KEY;
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>(){
 
             @Override
-            public void onResponse(String response){
+            public void onResponse(JSONObject response){
 
-                test = response;
+                test = response.toString();
                 //TODO: parse response
 
 
@@ -84,9 +87,9 @@ public class FilmFetcher {
 
         });
 
-        stringRequest.setTag(this);
+        jsonObjectRequest.setTag(this);
 
-        requestQueue.add(stringRequest);
+        requestQueue.add(jsonObjectRequest);
     }
 
     public void stop(){
