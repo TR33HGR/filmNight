@@ -1,4 +1,4 @@
-package com.tr33hgr.filmnight;
+package com.tr33hgr.filmnight.filmhandlers;
 
 import android.content.Context;
 import android.util.Log;
@@ -12,10 +12,17 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class FilmFetcher {
 
@@ -28,9 +35,17 @@ public class FilmFetcher {
     private String SEARCH_COMMAND = "s=";
     private String SEARCH_BY_ID = "i=";
 
-    protected FilmFetcher(Context context){
+    private List<Film> filmList;
+    private Film selectedFilm;
+
+    private Gson parser;
+
+    public FilmFetcher(Context context){
 
         this.context = context;
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        parser = gsonBuilder.create();
 
         setupRequestQueue();
     }
@@ -56,23 +71,49 @@ public class FilmFetcher {
         makeRequest(SEARCH_COMMAND, query);
     }
 
-    String test;
+    public String test;
 
     private void makeRequest(String command, String query){
 
-
         String url = API_URL + command + query + API_KEY;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>(){
+        JsonObjectRequest request = objectRequest(url, command);
+
+        request.setTag(this);
+
+        requestQueue.add(request);
+
+    }
+
+    private JsonObjectRequest objectRequest(String url, final String command){
+
+        return new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>(){
 
             @Override
             public void onResponse(JSONObject response){
 
                 test = response.toString();
-                //TODO: parse response
+                try {
+                    if (command == SEARCH_COMMAND) {
+                        JSONArray responseArray = response.getJSONArray("Search");
+
+                        if (responseArray.length() > 0) {
+                            filmList = Arrays.asList(parser.fromJson(responseArray.toString(), Film[].class));
+                        }
+
+                        Log.d("VOLLEY RECEIVE", "request complete: films " + filmList.get(1).getTitle());
+                    } else if (command == SEARCH_BY_ID) {
+                        //selectedFilm = parser.fromJson(response.getJSONObject("data").toString(), Film.class);
+                        selectedFilm = parser.fromJson(response.toString(), Film.class);
+
+                        Log.d("VOLLEY RECEIVE", "request complete: single film" + selectedFilm.getTitle());
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
 
 
-                Log.d("VOLLEY RECEIVE", "request complete" + response);
+
             }
 
         }, new Response.ErrorListener(){
@@ -86,10 +127,6 @@ public class FilmFetcher {
             }
 
         });
-
-        jsonObjectRequest.setTag(this);
-
-        requestQueue.add(jsonObjectRequest);
     }
 
     public void stop(){
