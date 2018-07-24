@@ -59,6 +59,8 @@ public class FilmFetcher {
         requestQueue = new RequestQueue(cache, network);
 
         requestQueue.start();
+
+
     }
 
     public void searchQuery(String query){
@@ -102,6 +104,7 @@ public class FilmFetcher {
                         }
 
                         Log.d("VOLLEY RECEIVE", "request complete: films " + filmList.get(1).getTitle());
+
                     } else if (command == SEARCH_BY_ID) {
                         //selectedFilm = parser.fromJson(response.getJSONObject("data").toString(), Film.class);
                         selectedFilm = parser.fromJson(response.toString(), Film.class);
@@ -139,5 +142,13 @@ public class FilmFetcher {
 
     public RequestQueue getRequestQueue() {
         return requestQueue;
+    }
+
+    public List<Film> getFilmList(){
+        return filmList;
+    }
+
+    public Film getSelectedFilm(){
+        return selectedFilm;
     }
 }

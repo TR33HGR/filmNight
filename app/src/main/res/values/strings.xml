@@ -8,4 +8,7 @@
     <string name="searchGenreTag"> film!</string>
 
     <string name="test">Lorem Ipsom</string>
+
+    <string name="filmNameFiller">Film Name</string>
+    <string name="filmYearFiller">Film Year</string>
 </resources>
