@@ -37,7 +37,7 @@ public class SearchFilmActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_search_film);
 
-        output = findViewById(R.id.outputView);
+        output = findViewById(R.id.selFilmInstrTag);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);

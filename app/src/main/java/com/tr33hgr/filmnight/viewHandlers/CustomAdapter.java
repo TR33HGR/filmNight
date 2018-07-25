@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.tr33hgr.filmnight.R;
 import com.tr33hgr.filmnight.filmhandlers.Film;
 
@@ -53,6 +54,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         filmYearView.setText(filmList.get(listPosition).getYear());
         //TODO: set image view from url
         //posterView.setImageResource(filmList.get(listPosition).getPosterURL());
+        Glide.with(posterView.getContext()).load(filmList.get(listPosition).getPosterURL()).into(posterView);
     }
 
     @Override

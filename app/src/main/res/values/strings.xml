@@ -8,6 +8,8 @@
     <string name="searchGenreTag"> film!</string>
 
     <string name="test">Lorem Ipsom</string>
+    <string name="selFilmInst">Select the film you are going to watch:</string>
+    <string name="selFilmInstTag">[This will auto-fill some event info]</string>
 
     <string name="filmNameFiller">Film Name</string>
     <string name="filmYearFiller">Film Year</string>
