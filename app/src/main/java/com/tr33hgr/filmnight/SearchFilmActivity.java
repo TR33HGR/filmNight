@@ -15,7 +15,9 @@ import com.android.volley.RequestQueue;
 import com.tr33hgr.filmnight.filmhandlers.Film;
 import com.tr33hgr.filmnight.filmhandlers.FilmFetcher;
 import com.tr33hgr.filmnight.viewHandlers.CustomAdapter;
+import com.tr33hgr.filmnight.viewHandlers.OnBottomReachedListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchFilmActivity extends AppCompatActivity {
@@ -28,7 +30,7 @@ public class SearchFilmActivity extends AppCompatActivity {
 
     FilmFetcher filmFetcher;
 
-    private List<Film> filmList;
+    private ArrayList<Film> filmList;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -49,6 +51,8 @@ public class SearchFilmActivity extends AppCompatActivity {
         filmFetcher = new FilmFetcher(this);
 
         handleIntent(getIntent());
+
+
     }
 
     @Override
@@ -59,14 +63,19 @@ public class SearchFilmActivity extends AppCompatActivity {
         handleIntent(intent);
     }
 
+    String query;
+    int page = 1;
+
     private void handleIntent(Intent intent){
 
         if(Intent.ACTION_SEARCH.equals(intent.getAction())){
 
-            String query = intent.getStringExtra(SearchManager.QUERY);
+            query = intent.getStringExtra(SearchManager.QUERY);
             Log.d("RECEIVED", query);
 
-            filmFetcher.searchQuery(query);
+
+
+            filmFetcher.searchQuery(query, page);
         }else{
             Log.d("SEARCH ERROR", "Error with getting query");
         }
@@ -75,19 +84,45 @@ public class SearchFilmActivity extends AppCompatActivity {
 
             @Override
             public void onRequestFinished(Request request) {
-                filmList = filmFetcher.getFilmList();
+                if(filmList == null){
+                    filmList = filmFetcher.getFilmList();
 
-                Log.d("COLLECTED FILM LIST", filmFetcher.getFilmList().get(1).getTitle());
+                    putFilmsInView();
+                }else if(filmList != filmFetcher.getFilmList()){
+                    int addedPosition = filmList.size();
+                    int addedCount = filmFetcher.getFilmList().size();
+                    filmList.addAll(filmFetcher.getFilmList());
 
-                putFilmsInView();
+                    adapter.notifyItemRangeInserted(addedPosition, addedCount);
+                }
+
+
+                Log.d("COLLECTED FILM LIST", filmList.get(1).getTitle());
+
+
             }
+
+
         });
+
+
 
     }
 
     private void putFilmsInView(){
         adapter = new CustomAdapter(filmList);
         recyclerView.setAdapter(adapter);
+
+        ((CustomAdapter) adapter).setOnBottomReachedListener(new OnBottomReachedListener() {
+            @Override
+            public void onBottomReached(int position) {
+                page++;
+
+                if(query != null){
+                    filmFetcher.searchQuery(query, page);
+                }
+            }
+        });
     }
 
     @Override

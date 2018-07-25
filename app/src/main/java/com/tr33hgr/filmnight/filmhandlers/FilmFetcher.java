@@ -12,15 +12,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,11 +30,12 @@ public class FilmFetcher {
     private RequestQueue requestQueue;
 
     private String API_URL = "http://www.omdbapi.com/?";
-    private String API_KEY = "&apikey=3e0fcb90";
+    private String API_KEY = "&type=movie&plot=full&apikey=3e0fcb90";
     private String SEARCH_COMMAND = "s=";
+    private String PAGE_COMMAND = "&page=";
     private String SEARCH_BY_ID = "i=";
 
-    private List<Film> filmList;
+    private Film[] filmList;
     private Film selectedFilm;
 
     private Gson parser;
@@ -63,21 +63,21 @@ public class FilmFetcher {
 
     }
 
-    public void searchQuery(String query){
+    public void searchQuery(String query, int page){
 
         if(query.contains(" ")){
 
             query = query.replace(' ', '+');
         }
 
-        makeRequest(SEARCH_COMMAND, query);
+        makeRequest(SEARCH_COMMAND, query, page);
     }
 
     public String test;
 
-    private void makeRequest(String command, String query){
+    private void makeRequest(String command, String query, int page){
 
-        String url = API_URL + command + query + API_KEY;
+        String url = API_URL + command + query + PAGE_COMMAND + Integer.toString(page) + API_KEY;
 
         JsonObjectRequest request = objectRequest(url, command);
 
@@ -100,10 +100,10 @@ public class FilmFetcher {
                         JSONArray responseArray = response.getJSONArray("Search");
 
                         if (responseArray.length() > 0) {
-                            filmList = Arrays.asList(parser.fromJson(responseArray.toString(), Film[].class));
+                            filmList = parser.fromJson(responseArray.toString(), Film[].class);
                         }
 
-                        Log.d("VOLLEY RECEIVE", "request complete: films " + filmList.get(1).getTitle());
+                        Log.d("VOLLEY RECEIVE", "request complete: films " + filmList[1].getTitle());
 
                     } else if (command == SEARCH_BY_ID) {
                         //selectedFilm = parser.fromJson(response.getJSONObject("data").toString(), Film.class);
@@ -144,8 +144,8 @@ public class FilmFetcher {
         return requestQueue;
     }
 
-    public List<Film> getFilmList(){
-        return filmList;
+    public ArrayList<Film> getFilmList(){
+        return new ArrayList<Film>(Arrays.asList(filmList));
     }
 
     public Film getSelectedFilm(){

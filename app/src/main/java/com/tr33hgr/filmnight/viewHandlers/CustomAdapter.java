@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.tr33hgr.filmnight.R;
 import com.tr33hgr.filmnight.filmhandlers.Film;
 
@@ -30,11 +31,17 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             this.filmYearView = itemView.findViewById(R.id.filmYearView);
             this.posterView = itemView.findViewById(R.id.posterView);
         }
-
     }
+
+    OnBottomReachedListener onBottomReachedListener;
 
     public CustomAdapter(List<Film> filmList){
         this.filmList = filmList;
+    }
+
+    public void setOnBottomReachedListener(OnBottomReachedListener onBottomReachedListener){
+
+        this.onBottomReachedListener = onBottomReachedListener;
     }
 
     @Override
@@ -52,9 +59,17 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
         filmNameView.setText(filmList.get(listPosition).getTitle());
         filmYearView.setText(filmList.get(listPosition).getYear());
-        //TODO: set image view from url
-        //posterView.setImageResource(filmList.get(listPosition).getPosterURL());
-        Glide.with(posterView.getContext()).load(filmList.get(listPosition).getPosterURL()).into(posterView);
+
+        RequestOptions options = new RequestOptions().error((R.mipmap.ic_launcher));
+        Glide.with(posterView.getContext()).load(filmList.get(listPosition).getPosterURL()).apply(options).into(posterView);
+
+
+        if (listPosition == filmList.size() - 1){
+
+            onBottomReachedListener.onBottomReached(listPosition);
+
+        }
+
     }
 
     @Override
