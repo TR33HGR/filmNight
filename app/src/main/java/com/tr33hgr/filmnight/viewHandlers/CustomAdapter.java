@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.tr33hgr.filmnight.R;
+import com.tr33hgr.filmnight.SearchFilmActivity;
 import com.tr33hgr.filmnight.filmhandlers.Film;
 
 import java.util.List;
@@ -47,6 +48,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.film_card, parent, false);
+
+        view.setOnClickListener(SearchFilmActivity.onCardSelectListener);
 
         return new MyViewHolder(view);
     }

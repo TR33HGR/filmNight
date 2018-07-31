@@ -1,6 +1,7 @@
 package com.tr33hgr.filmnight;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -27,6 +29,7 @@ public class SearchFilmActivity extends AppCompatActivity {
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView recyclerView;
+    public static View.OnClickListener onCardSelectListener;
 
     FilmFetcher filmFetcher;
 
@@ -38,6 +41,8 @@ public class SearchFilmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_search_film);
+
+        onCardSelectListener = new OnCardSelectListener(this);
 
         output = findViewById(R.id.selFilmInstrTag);
 
@@ -51,8 +56,25 @@ public class SearchFilmActivity extends AppCompatActivity {
         filmFetcher = new FilmFetcher(this);
 
         handleIntent(getIntent());
+    }
 
+    private class OnCardSelectListener implements View.OnClickListener{
+        private final Context context;
 
+        private OnCardSelectListener(Context context){
+            this.context = context;
+        }
+
+        @Override
+        public void onClick(View v){
+            startEventCreate(v);
+        }
+
+        private void startEventCreate(View v){
+            int selectedItemPosition = recyclerView.getChildAdapterPosition(v);
+
+            Log.d("FILM SELCTED", filmList.get(selectedItemPosition).getTitle());
+        }
     }
 
     @Override
