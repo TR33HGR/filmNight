@@ -30,13 +30,16 @@ public class FilmFetcher {
     private RequestQueue requestQueue;
 
     private String API_URL = "http://www.omdbapi.com/?";
-    private String API_KEY = "&type=movie&plot=full&apikey=3e0fcb90";
+    private String API_KEY = "&apikey=3e0fcb90";
+    private String TYPE_COMMAND = "&type=movie";
+    private String FORMAT_COMMAND = "&r=json";
+    private String PLOT_LENGTH_COMMAND = "&plot=full";
     private String SEARCH_COMMAND = "s=";
     private String PAGE_COMMAND = "&page=";
     private String SEARCH_BY_ID = "i=";
 
     private Film[] filmList;
-    private Film selectedFilm;
+    private FilmEvent selectedFilm;
 
     private Gson parser;
 
@@ -77,7 +80,17 @@ public class FilmFetcher {
 
     private void makeRequest(String command, String query, int page){
 
-        String url = API_URL + command + query + PAGE_COMMAND + Integer.toString(page) + API_KEY;
+        String url = API_URL + command + query;
+
+        if(page != 0) {
+            url+=PAGE_COMMAND + Integer.toString(page);
+        }else{
+            url+=PLOT_LENGTH_COMMAND;
+        }
+
+        url+=TYPE_COMMAND + FORMAT_COMMAND + API_KEY;
+
+        Log.d("URL CREATED", url);
 
         JsonObjectRequest request = objectRequest(url, command);
 
@@ -107,9 +120,9 @@ public class FilmFetcher {
 
                     } else if (command == SEARCH_BY_ID) {
                         //selectedFilm = parser.fromJson(response.getJSONObject("data").toString(), Film.class);
-                        selectedFilm = parser.fromJson(response.toString(), Film.class);
+                        selectedFilm = parser.fromJson(response.toString(), FilmEvent.class);
 
-                        Log.d("VOLLEY RECEIVE", "request complete: single film" + selectedFilm.getTitle());
+                        Log.d("FILM VOLLEY RECEIVE", response.toString());
                     }
                 }catch(Exception e){
                     e.printStackTrace();
@@ -148,7 +161,11 @@ public class FilmFetcher {
         return new ArrayList<Film>(Arrays.asList(filmList));
     }
 
-    public Film getSelectedFilm(){
+    public FilmEvent getSelectedFilm(){
         return selectedFilm;
+    }
+
+    public void searchSelectedFilm(String id) {
+        makeRequest(SEARCH_BY_ID, id, 0);
     }
 }

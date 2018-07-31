@@ -16,7 +16,7 @@ public class Film {
     @SerializedName("Poster")
     private String posterURL;
 
-    private Film(String id, String title, String year, String posterURL){
+    Film(String id, String title, String year, String posterURL){
         this.id = id;
         this.title = title;
         this.year = year;

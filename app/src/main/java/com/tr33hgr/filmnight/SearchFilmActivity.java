@@ -31,6 +31,8 @@ public class SearchFilmActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     public static View.OnClickListener onCardSelectListener;
 
+    static Context context;
+
     FilmFetcher filmFetcher;
 
     private ArrayList<Film> filmList;
@@ -39,6 +41,8 @@ public class SearchFilmActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState){
 
         super.onCreate(savedInstanceState);
+
+        this.context = this;
 
         setContentView(R.layout.activity_search_film);
 
@@ -73,7 +77,11 @@ public class SearchFilmActivity extends AppCompatActivity {
         private void startEventCreate(View v){
             int selectedItemPosition = recyclerView.getChildAdapterPosition(v);
 
-            Log.d("FILM SELCTED", filmList.get(selectedItemPosition).getTitle());
+            Log.d("FILM SELECTED", filmList.get(selectedItemPosition).getTitle());
+
+            genSearch = false;
+
+            filmFetcher.searchSelectedFilm(filmList.get(selectedItemPosition).getId());
         }
     }
 
@@ -87,10 +95,13 @@ public class SearchFilmActivity extends AppCompatActivity {
 
     String query;
     int page = 1;
+    boolean genSearch = false;
 
     private void handleIntent(Intent intent){
 
         if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+
+            genSearch = true;
 
             query = intent.getStringExtra(SearchManager.QUERY);
             Log.d("RECEIVED", query);
@@ -106,20 +117,29 @@ public class SearchFilmActivity extends AppCompatActivity {
 
             @Override
             public void onRequestFinished(Request request) {
-                if(filmList == null){
-                    filmList = filmFetcher.getFilmList();
+                if (genSearch == true){
+                    if(filmList == null){
+                        filmList = filmFetcher.getFilmList();
 
-                    putFilmsInView();
-                }else if(filmList != filmFetcher.getFilmList()){
-                    int addedPosition = filmList.size();
-                    int addedCount = filmFetcher.getFilmList().size();
-                    filmList.addAll(filmFetcher.getFilmList());
+                        putFilmsInView();
+                    }else if(filmList != filmFetcher.getFilmList()){
+                        int addedPosition = filmList.size();
+                        int addedCount = filmFetcher.getFilmList().size();
+                        filmList.addAll(filmFetcher.getFilmList());
 
-                    adapter.notifyItemRangeInserted(addedPosition, addedCount);
+                        adapter.notifyItemRangeInserted(addedPosition, addedCount);
+                    }
+                    Log.d("COLLECTED FILM LIST", filmList.get(1).getTitle());
+                }else{
+                    Log.d("COLLECTED SELeCTED FILM", filmFetcher.getSelectedFilm().getTitle());
+                    Intent startFormActivity = new Intent(context, EventCreateActivity.class);
+                    startFormActivity.putExtra("Selected Film",filmFetcher.getSelectedFilm());
+                    startActivity(startFormActivity);
                 }
 
 
-                Log.d("COLLECTED FILM LIST", filmList.get(1).getTitle());
+
+
 
 
             }
