@@ -3,8 +3,10 @@ package com.tr33hgr.filmnight;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -21,13 +23,14 @@ public class EventCreateActivity extends AppCompatActivity{
         Intent intent = getIntent();
         FilmEvent filmEvent = (FilmEvent) intent.getParcelableExtra("SELECTED_FILM");
 
-        EditText filmName = findViewById(R.id.formFilmNameText);
-        EditText filmYear = findViewById(R.id.formYearText);
-        EditText filmLanguage = findViewById(R.id.formLanguageText);
-        EditText filmGenre = findViewById(R.id.formGenreText);
-        EditText filmPlot = findViewById(R.id.formPlotText);
-
+        TextView filmName = findViewById(R.id.formFilmNameText);
+        TextView filmYear = findViewById(R.id.formYearText);
+        TextView filmLanguage = findViewById(R.id.formLanguageText);
+        TextView filmGenre = findViewById(R.id.formGenreText);
+        TextView filmPlot = findViewById(R.id.formPlotText);
         ImageView posterView = findViewById(R.id.formPosterView);
+
+        filmPlot.setMovementMethod(new ScrollingMovementMethod());
 
         RequestOptions options = new RequestOptions().error((R.mipmap.ic_launcher));
         Glide.with(posterView.getContext()).load(filmEvent.getPosterURL()).apply(options).into(posterView);

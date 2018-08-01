@@ -9,14 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FilmEvent extends Film implements Parcelable {
-    int ID_POS = 0;
-    int TITLE_POS = 1;
-    int YEAR_POS = 2;
-    int URL_POS = 3;
-    int PLOT_POS = 4;
-    int GENRE_POS = 5;
-    int LAN_POS = 6;
-
     @SerializedName("Plot")
     private String plot;
 
@@ -93,13 +85,13 @@ public class FilmEvent extends Film implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         List<String> parcelParams = new ArrayList<>();
-        parcelParams.add(ID_POS, id);
-        parcelParams.add(TITLE_POS, title);
-        parcelParams.add(YEAR_POS, year);
-        parcelParams.add(URL_POS, posterURL);
-        parcelParams.add(PLOT_POS, plot);
-        parcelParams.add(GENRE_POS, genre);
-        parcelParams.add(LAN_POS, language);
+        parcelParams.add(id);
+        parcelParams.add(title);
+        parcelParams.add(year);
+        parcelParams.add(posterURL);
+        parcelParams.add(plot);
+        parcelParams.add(genre);
+        parcelParams.add(language);
 
         parcel.writeStringList(parcelParams);
     }
