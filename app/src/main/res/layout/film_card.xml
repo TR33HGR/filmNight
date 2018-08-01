@@ -22,7 +22,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/posterView"
+                    android:id="@+id/formPosterView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:minHeight="112dp"

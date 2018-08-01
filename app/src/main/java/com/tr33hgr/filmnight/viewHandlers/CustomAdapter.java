@@ -30,7 +30,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
             this.filmNameView = itemView.findViewById(R.id.filmNameView);
             this.filmYearView = itemView.findViewById(R.id.filmYearView);
-            this.posterView = itemView.findViewById(R.id.posterView);
+            this.posterView = itemView.findViewById(R.id.formPosterView);
         }
     }
 

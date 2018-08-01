@@ -122,7 +122,7 @@ public class FilmFetcher {
                         //selectedFilm = parser.fromJson(response.getJSONObject("data").toString(), Film.class);
                         selectedFilm = parser.fromJson(response.toString(), FilmEvent.class);
 
-                        Log.d("FILM VOLLEY RECEIVE", response.toString());
+                        Log.d("FILM VOLLEY RECEIVE", selectedFilm.getTitle() + response.toString());
                     }
                 }catch(Exception e){
                     e.printStackTrace();

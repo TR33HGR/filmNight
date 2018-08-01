@@ -131,9 +131,9 @@ public class SearchFilmActivity extends AppCompatActivity {
                     }
                     Log.d("COLLECTED FILM LIST", filmList.get(1).getTitle());
                 }else{
-                    Log.d("COLLECTED SELeCTED FILM", filmFetcher.getSelectedFilm().getTitle());
+                    Log.d("COLLECTED SELECTED FILM", filmFetcher.getSelectedFilm().getTitle());
                     Intent startFormActivity = new Intent(context, EventCreateActivity.class);
-                    startFormActivity.putExtra("Selected Film",filmFetcher.getSelectedFilm());
+                    startFormActivity.putExtra("SELECTED_FILM",filmFetcher.getSelectedFilm());
                     startActivity(startFormActivity);
                 }
 

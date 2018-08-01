@@ -5,16 +5,16 @@ import com.google.gson.annotations.SerializedName;
 public class Film {
 
     @SerializedName("imdbID")
-    private String id;
+    protected String id;
 
     @SerializedName("Title")
-    private String title;
+    protected String title;
 
     @SerializedName("Year")
-    private String year;
+    protected String year;
 
     @SerializedName("Poster")
-    private String posterURL;
+    protected String posterURL;
 
     Film(String id, String title, String year, String posterURL){
         this.id = id;
