@@ -2,5 +2,5 @@ package com.tr33hgr.filmnight.viewHandlers;
 
 public interface OnBottomReachedListener {
 
-    void onBottomReached(int position);
+    void onBottomReached();//method called when reached bottom of general film search recycler view
 }

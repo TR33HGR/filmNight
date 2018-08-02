@@ -10,59 +10,41 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.tr33hgr.filmnight.filmhandlers.Film;
 import com.tr33hgr.filmnight.filmhandlers.FilmFetcher;
-import com.tr33hgr.filmnight.viewHandlers.CustomAdapter;
+import com.tr33hgr.filmnight.viewHandlers.CardAdapter;
 import com.tr33hgr.filmnight.viewHandlers.OnBottomReachedListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SearchFilmActivity extends AppCompatActivity {
 
-    TextView output;
-
-    RecyclerView.Adapter adapter;
-    RecyclerView.LayoutManager layoutManager;
-    RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView recyclerView;
     public static View.OnClickListener onCardSelectListener;
 
-    static Context context;
+    //global reference to this context for protected intent
+    private static Context context;
 
-    FilmFetcher filmFetcher;
+    private FilmFetcher filmFetcher;
 
+    //stores all the films received from the general search
     private ArrayList<Film> filmList;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState){
+    //Holds search state of activity, default general film search (from previous activity)
+    //to get list of possible films
+    private boolean genSearch = true;
 
-        super.onCreate(savedInstanceState);
+    private String query;//global reference to general film search query from previous activity
 
-        this.context = this;
+    //global variable for page to be received on general search, initialized to first page
+    private int page = 1;
 
-        setContentView(R.layout.activity_search_film);
-
-        onCardSelectListener = new OnCardSelectListener(this);
-
-        output = findViewById(R.id.selFilmInstrTag);
-
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        filmFetcher = new FilmFetcher(this);
-
-        handleIntent(getIntent());
-    }
-
-    private class OnCardSelectListener implements View.OnClickListener{
+    //handles process when a film (card) is selected
+    public class OnCardSelectListener implements View.OnClickListener{
         private final Context context;
 
         private OnCardSelectListener(Context context){
@@ -70,19 +52,94 @@ public class SearchFilmActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onClick(View v){
-            startEventCreate(v);
+        public void onClick(View cardView){
+            //change state of this activity to search for a specific film
+            genSearch = false;
+
+            getSelectedFilm(cardView);
         }
 
-        private void startEventCreate(View v){
-            int selectedItemPosition = recyclerView.getChildAdapterPosition(v);
+        private void getSelectedFilm(View cardView){
+            //get selected film (card) position (index) in recycler view
+            int selectedItemPosition = recyclerView.getChildAdapterPosition(cardView);
 
             Log.d("FILM SELECTED", filmList.get(selectedItemPosition).getTitle());
 
-            genSearch = false;
-
+            //match selected film (card) to local list of films
+            //search for selected film by IMDb id
             filmFetcher.searchSelectedFilm(filmList.get(selectedItemPosition).getId());
         }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_search_film);
+
+        //setup recycler (scrollable) view containing all the results of the film search
+        setupRecyclerView();
+
+        //for use creating a protected intent
+        this.context = this;
+
+        setupFilmFetcher();
+
+        //handle the search
+        handleIntent(getIntent());
+    }
+
+    private void setupRecyclerView(){
+        recyclerView = findViewById(R.id.search_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    private void setupFilmFetcher(){
+        //instantiate class that handles all the searching and creation of Film objects
+        filmFetcher = new FilmFetcher(this);
+
+        //setup listener for when search has been complete
+        filmFetcher.getRequestQueue().addRequestFinishedListener(new RequestQueue.RequestFinishedListener(){
+            @Override
+            public void onRequestFinished(Request request) {
+                if (genSearch == true){//if still in general search state
+                    if(filmList == null){//if this is the first search
+                        filmList = filmFetcher.getFilmList();
+
+                        putFilmsInView();//put films into recyclerView
+
+                    // if this is not the first search, and we don't receive the same list again
+                    //(meaning we have already received every film)
+                    }else if(filmList != filmFetcher.getFilmList()){
+
+                        //get the list position the new page will be added at (the last position)
+                        int addedPosition = filmList.size();
+                        //get how many are going to be added
+                        int addedCount = filmFetcher.getFilmList().size();
+                        //add to local film list
+                        filmList.addAll(filmFetcher.getFilmList());
+                        //tell the adapter how many have been added and where
+                        adapter.notifyItemRangeInserted(addedPosition, addedCount);
+                    }
+
+                    Log.d("COLLECTED FILM LIST", filmList.get(1).getTitle());
+
+                }else{//if we are in the specific film search state from a film (card) being selected
+
+                    Log.d("COLLECTED SELECTED FILM", filmFetcher.getSelectedFilm().getTitle());
+
+                    //instantiate intent to start EventCreateActivity
+                    Intent startFormActivity = new Intent(context, EventCreateActivity.class);
+                    //give intent the specific film searched
+                    startFormActivity.putExtra("SELECTED_FILM",filmFetcher.getSelectedFilm());
+                    //start the EventCreateActivity
+                    startActivity(startFormActivity);
+                }
+            }
+        });
     }
 
     @Override
@@ -93,85 +150,53 @@ public class SearchFilmActivity extends AppCompatActivity {
         handleIntent(intent);
     }
 
-    String query;
-    int page = 1;
-    boolean genSearch = false;
-
     private void handleIntent(Intent intent){
 
-        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+        if(Intent.ACTION_SEARCH.equals(intent.getAction())){//if a search has happened
 
-            genSearch = true;
-
-            query = intent.getStringExtra(SearchManager.QUERY);
+            query = intent.getStringExtra(SearchManager.QUERY);//get search query
             Log.d("RECEIVED", query);
 
+            filmFetcher.searchQuery(query, page);//perform search
 
-
-            filmFetcher.searchQuery(query, page);
         }else{
             Log.d("SEARCH ERROR", "Error with getting query");
         }
-
-        filmFetcher.getRequestQueue().addRequestFinishedListener(new RequestQueue.RequestFinishedListener(){
-
-            @Override
-            public void onRequestFinished(Request request) {
-                if (genSearch == true){
-                    if(filmList == null){
-                        filmList = filmFetcher.getFilmList();
-
-                        putFilmsInView();
-                    }else if(filmList != filmFetcher.getFilmList()){
-                        int addedPosition = filmList.size();
-                        int addedCount = filmFetcher.getFilmList().size();
-                        filmList.addAll(filmFetcher.getFilmList());
-
-                        adapter.notifyItemRangeInserted(addedPosition, addedCount);
-                    }
-                    Log.d("COLLECTED FILM LIST", filmList.get(1).getTitle());
-                }else{
-                    Log.d("COLLECTED SELECTED FILM", filmFetcher.getSelectedFilm().getTitle());
-                    Intent startFormActivity = new Intent(context, EventCreateActivity.class);
-                    startFormActivity.putExtra("SELECTED_FILM",filmFetcher.getSelectedFilm());
-                    startActivity(startFormActivity);
-                }
-
-
-
-
-
-
-            }
-
-
-        });
-
-
-
     }
 
     private void putFilmsInView(){
-        adapter = new CustomAdapter(filmList);
-        recyclerView.setAdapter(adapter);
+        setupCardAdapter();
 
-        ((CustomAdapter) adapter).setOnBottomReachedListener(new OnBottomReachedListener() {
+        //link the adapter to the recyclerView
+        recyclerView.setAdapter(adapter);
+    }
+    private void setupCardAdapter(){
+        //give the adapter the local filmList
+        adapter = new CardAdapter(filmList);
+
+        //for film (card) adapter related to recyclerView, get search results from next page when
+        //reached bottom of current results
+        ((CardAdapter) adapter).setOnBottomReachedListener(new OnBottomReachedListener() {
             @Override
-            public void onBottomReached(int position) {
+            public void onBottomReached() {
                 page++;
 
-                if(query != null){
+                if(query != null){//if a general search has happened
                     filmFetcher.searchQuery(query, page);
                 }
             }
         });
+
+        //set this activity to listen for a film (card) being selected
+        onCardSelectListener = new OnCardSelectListener(this);
     }
 
+    //when the activity ends
     @Override
     protected void onStop() {
 
         super.onStop();
-
+        //stop the film fetcher
         filmFetcher.stop();
     }
 }

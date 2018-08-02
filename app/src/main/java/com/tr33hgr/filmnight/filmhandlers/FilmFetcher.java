@@ -21,14 +21,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class FilmFetcher {
-
-    private Context context;
-
-    private RequestQueue requestQueue;
-
+    //constants for OMDb API search
     private String API_URL = "http://www.omdbapi.com/?";
     private String API_KEY = "&apikey=3e0fcb90";
     private String TYPE_COMMAND = "&type=movie";
@@ -38,6 +33,10 @@ public class FilmFetcher {
     private String PAGE_COMMAND = "&page=";
     private String SEARCH_BY_ID = "i=";
 
+    private Context context;
+
+    private RequestQueue requestQueue;
+
     private Film[] filmList;
     private FilmEvent selectedFilm;
 
@@ -45,29 +44,32 @@ public class FilmFetcher {
 
     public FilmFetcher(Context context){
 
+        //context from which this class was called
         this.context = context;
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        parser = gsonBuilder.create();
+        //instantiate JSON parser
+        parser = new GsonBuilder().create();
 
+        //setup queue of queries for OMDb API
         setupRequestQueue();
     }
 
     private void setupRequestQueue(){
-        Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);//1MB cap
+        //instantiate cache, 1MB cap
+        Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
 
         //setup the network to use HttpURLConnection as the HTTP client
         Network network = new BasicNetwork(new HurlStack());
 
+        //instantiate request queue of queries for OMDb API
         requestQueue = new RequestQueue(cache, network);
 
         requestQueue.start();
-
-
     }
 
+    //formats general search query before starting search
     public void searchQuery(String query, int page){
-
+        //replace all space with +
         if(query.contains(" ")){
 
             query = query.replace(' ', '+');
@@ -76,50 +78,59 @@ public class FilmFetcher {
         makeRequest(SEARCH_COMMAND, query, page);
     }
 
-    public String test;
+    public void searchSelectedFilm(String id) {
+        //make a search request based on IMDb id, page = 0 as no pages expected
+        makeRequest(SEARCH_BY_ID, id, 0);
+    }
 
     private void makeRequest(String command, String query, int page){
 
+        //start building API search url from type of search command, and the search query
         String url = API_URL + command + query;
 
-        if(page != 0) {
-            url+=PAGE_COMMAND + Integer.toString(page);
-        }else{
-            url+=PLOT_LENGTH_COMMAND;
+        if(page != 0) {//page != 0 if general search query
+            url+=PAGE_COMMAND + Integer.toString(page);//add page to be requested
+        }else{// specific film search
+            url+=PLOT_LENGTH_COMMAND;//add length of plot to be requested
         }
-
+        //limit to only requesting movies, search results being in JSON format, and add API key
         url+=TYPE_COMMAND + FORMAT_COMMAND + API_KEY;
 
         Log.d("URL CREATED", url);
 
+        //make search request
         JsonObjectRequest request = objectRequest(url, command);
 
+        //tag with context
         request.setTag(this);
 
+        //add request to queue
         requestQueue.add(request);
 
     }
 
     private JsonObjectRequest objectRequest(String url, final String command){
 
+        //return a request to GET from the url, and respond as below
         return new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>(){
 
             @Override
             public void onResponse(JSONObject response){
 
-                test = response.toString();
                 try {
-                    if (command == SEARCH_COMMAND) {
+                    if (command == SEARCH_COMMAND) {//if doing a general search
+                        //get the array marked response from the received JSON object
                         JSONArray responseArray = response.getJSONArray("Search");
 
-                        if (responseArray.length() > 0) {
+                        if (responseArray.length() > 0) {//if there are object in the array
+                            //parse and create array of Films
                             filmList = parser.fromJson(responseArray.toString(), Film[].class);
                         }
 
                         Log.d("VOLLEY RECEIVE", "request complete: films " + filmList[1].getTitle());
 
-                    } else if (command == SEARCH_BY_ID) {
-                        //selectedFilm = parser.fromJson(response.getJSONObject("data").toString(), Film.class);
+                    } else if (command == SEARCH_BY_ID) {//if specific film search
+                        //parse and create FilmEvent
                         selectedFilm = parser.fromJson(response.toString(), FilmEvent.class);
 
                         Log.d("FILM VOLLEY RECEIVE", selectedFilm.getTitle() + response.toString());
@@ -136,9 +147,6 @@ public class FilmFetcher {
 
             @Override
             public void onErrorResponse(VolleyError error){
-
-                test = "ERROR";
-
                 Log.d("VOLLEY ERROR", "Failed request");
             }
 
@@ -146,9 +154,9 @@ public class FilmFetcher {
     }
 
     public void stop(){
-
+        //close request queue
         if(requestQueue != null){
-
+            //close all requests tags with this context
             requestQueue.cancelAll(this);
         }
     }
@@ -158,14 +166,11 @@ public class FilmFetcher {
     }
 
     public ArrayList<Film> getFilmList(){
+        //return list of films in ArrayList format
         return new ArrayList<Film>(Arrays.asList(filmList));
     }
 
     public FilmEvent getSelectedFilm(){
         return selectedFilm;
-    }
-
-    public void searchSelectedFilm(String id) {
-        makeRequest(SEARCH_BY_ID, id, 0);
     }
 }

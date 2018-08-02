@@ -6,23 +6,23 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/search_listInstr_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="left"
         android:layout_marginEnd="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:layout_gravity="left"
-        android:text="@string/selFilmInst"
+        android:text="@string/filmListInst"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/selFilmInstrTag"
+        android:id="@+id/search_listInstrTag_txt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
@@ -31,15 +31,15 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/selFilmInstTag"
+        android:text="@string/filmListInstTag"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintEnd_toEndOf="@+id/search_listInstr_txt"
+        app:layout_constraintStart_toStartOf="@+id/search_listInstr_txt"
+        app:layout_constraintTop_toBottomOf="@+id/search_listInstr_txt" />
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/relativeLayout"
+        android:id="@+id/search_recycler_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="24dp"
@@ -51,11 +51,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selFilmInstrTag"
+        app:layout_constraintTop_toBottomOf="@+id/search_listInstrTag_txt"
         tools:context=".SearchFilmActivity">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/search_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical" />

@@ -7,56 +7,7 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/genreTextPre"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/searchText_alt"
-        app:layout_constraintStart_toStartOf="@+id/genreSearchQ"
-        app:layout_constraintTop_toBottomOf="@+id/genreSearchQ" />
-
-    <TextView
-        android:id="@+id/genreTextPost"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/searchGenreTag"
-        app:layout_constraintBottom_toBottomOf="@+id/genreSearch"
-        app:layout_constraintEnd_toEndOf="@+id/genreSearchQ"
-        app:layout_constraintTop_toTopOf="@+id/genreSearch"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <SearchView
-        android:id="@+id/genreSearch"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/genreTextPre"
-        app:layout_constraintEnd_toStartOf="@+id/genreTextPost"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/genreTextPre"
-        app:layout_constraintTop_toTopOf="@+id/genreTextPre"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/genreSearchQ"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/searchGenreQ"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filmText" />
-
-    <TextView
-        android:id="@+id/filmSearchQ"
+        android:id="@+id/main_filmSearchQ_txt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -71,27 +22,79 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/filmText"
+        android:id="@+id/main_filmSearchStatement_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/searchText"
-        app:layout_constraintStart_toStartOf="@+id/filmSearchQ"
-        app:layout_constraintTop_toBottomOf="@+id/filmSearchQ" />
+        android:text="@string/searchStatement"
+        app:layout_constraintStart_toStartOf="@+id/main_filmSearchQ_txt"
+        app:layout_constraintTop_toBottomOf="@+id/main_filmSearchQ_txt" />
 
     <SearchView
-        android:id="@+id/filmSearch"
+        android:id="@+id/main_filmSearch_srch"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/filmText"
-        app:layout_constraintEnd_toEndOf="@+id/filmSearchQ"
+        app:layout_constraintBottom_toBottomOf="@+id/main_filmSearchStatement_txt"
+        app:layout_constraintEnd_toEndOf="@+id/main_filmSearchQ_txt"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/filmText"
-        app:layout_constraintTop_toTopOf="@+id/filmText"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toEndOf="@+id/main_filmSearchStatement_txt"
+        app:layout_constraintTop_toTopOf="@+id/main_filmSearchStatement_txt"
+        app:layout_constraintVertical_bias="0.0">
+
+    </SearchView>
+
+    <TextView
+        android:id="@+id/main_genreSearchQ_txt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_weight="1"
+        android:text="@string/searchGenreQ"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_filmSearchStatement_txt" />
+
+    <TextView
+        android:id="@+id/main_genreSearchStatement_srch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/searchStatement_alt"
+        app:layout_constraintStart_toStartOf="@+id/main_genreSearchQ_txt"
+        app:layout_constraintTop_toBottomOf="@+id/main_genreSearchQ_txt" />
+
+    <SearchView
+        android:id="@+id/main_genreSearch_srch"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/main_genreSearchStatement_srch"
+        app:layout_constraintEnd_toStartOf="@+id/main_genreSearchStatmentTag_txt"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/main_genreSearchStatement_srch"
+        app:layout_constraintTop_toTopOf="@+id/main_genreSearchStatement_srch"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/main_genreSearchStatmentTag_txt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/searchStatementTag"
+        app:layout_constraintBottom_toBottomOf="@+id/main_genreSearch_srch"
+        app:layout_constraintEnd_toEndOf="@+id/main_genreSearchQ_txt"
+        app:layout_constraintTop_toTopOf="@+id/main_genreSearch_srch"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

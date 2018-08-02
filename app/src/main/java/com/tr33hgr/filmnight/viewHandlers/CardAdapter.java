@@ -15,28 +15,30 @@ import com.tr33hgr.filmnight.filmhandlers.Film;
 
 import java.util.List;
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder>{
+public class CardAdapter extends RecyclerView.Adapter<CardAdapter.FilmCardViewHolder>{
 
-    private List<Film> filmList;
+    private List<Film> filmList;//local reference to filmList
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    //listener to when at the end of currently received films
+    OnBottomReachedListener onBottomReachedListener;
+
+    //holder of each individual film card info
+    public static class FilmCardViewHolder extends RecyclerView.ViewHolder{
 
         TextView filmNameView;
         TextView filmYearView;
         ImageView posterView;
 
-        public MyViewHolder(View itemView){
-            super(itemView);
+        public FilmCardViewHolder(View cardView){
+            super(cardView);
 
-            this.filmNameView = itemView.findViewById(R.id.filmNameView);
-            this.filmYearView = itemView.findViewById(R.id.filmYearView);
-            this.posterView = itemView.findViewById(R.id.formPosterView);
+            this.filmNameView = cardView.findViewById(R.id.card_filmTitle_txt);
+            this.filmYearView = cardView.findViewById(R.id.card_filmYear_txt);
+            this.posterView = cardView.findViewById(R.id.card_poster_img);
         }
     }
 
-    OnBottomReachedListener onBottomReachedListener;
-
-    public CustomAdapter(List<Film> filmList){
+    public CardAdapter(List<Film> filmList){
         this.filmList = filmList;
     }
 
@@ -46,16 +48,18 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public FilmCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        //add film_card layout to adapter
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.film_card, parent, false);
 
+        //link to onCardSelectListener (SearchFilmActivity)
         view.setOnClickListener(SearchFilmActivity.onCardSelectListener);
 
-        return new MyViewHolder(view);
+        return new FilmCardViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int listPosition){
+    public void onBindViewHolder(final FilmCardViewHolder holder, final int listPosition){
         TextView filmNameView = holder.filmNameView;
         TextView filmYearView = holder.filmYearView;
         ImageView posterView = holder.posterView;
@@ -63,13 +67,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         filmNameView.setText(filmList.get(listPosition).getTitle());
         filmYearView.setText(filmList.get(listPosition).getYear());
 
+        //set default poster image is error receiving from url
         RequestOptions options = new RequestOptions().error((R.mipmap.ic_launcher));
+        //get poster from url
         Glide.with(posterView.getContext()).load(filmList.get(listPosition).getPosterURL()).apply(options).into(posterView);
 
-
+        //set condition which says bottom has been reached
         if (listPosition == filmList.size() - 1){
 
-            onBottomReachedListener.onBottomReached(listPosition);
+            onBottomReachedListener.onBottomReached();
 
         }
 

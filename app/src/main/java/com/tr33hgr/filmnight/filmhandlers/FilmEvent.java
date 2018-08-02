@@ -18,18 +18,7 @@ public class FilmEvent extends Film implements Parcelable {
     @SerializedName("Language")
     private String language;
 
-    private FilmEvent(ArrayList<String> params) {
-        super(params.get(0), params.get(1), params.get(2), params.get(3));
-
-        this.plot = params.get(4);
-        this.genre = params.get(5);
-        this.language = params.get(6);
-    }
-
-    private FilmEvent(Parcel in) {
-        this(in.createStringArrayList());
-    }
-
+    //creator to allow class to be parceled and then un-parceled
     public static final Creator<FilmEvent> CREATOR = new Creator<FilmEvent>() {
         @Override
         public FilmEvent createFromParcel(Parcel in) {
@@ -41,6 +30,44 @@ public class FilmEvent extends Film implements Parcelable {
             return new FilmEvent[size];
         }
     };
+
+    //main constructor, uses ArrayList to be compatible with parcelable
+    private FilmEvent(ArrayList<String> params) {
+        //ArrayList order comes from writeToParcel
+        //0 = id, 1 = title, 2 = year, 3 = posterURL
+        super(params.get(0), params.get(1), params.get(2), params.get(3));
+        //4 = plot, 5 = genre, 6 = language
+        this.plot = params.get(4);
+        this.genre = params.get(5);
+        this.language = params.get(6);
+    }
+
+    //parcelable constructor
+    private FilmEvent(Parcel in) {
+        this(in.createStringArrayList());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    //creates parcel from class
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        List<String> parcelParams = new ArrayList<>();//ArrayList storing all info
+        //add all info to ArrayList, order is important and reflected in main constructor
+        parcelParams.add(id);
+        parcelParams.add(title);
+        parcelParams.add(year);
+        parcelParams.add(posterURL);
+        parcelParams.add(plot);
+        parcelParams.add(genre);
+        parcelParams.add(language);
+
+        //add ArrayList to parcel
+        parcel.writeStringList(parcelParams);
+    }
 
     public String getPlot(){
         return this.plot;
@@ -69,6 +96,7 @@ public class FilmEvent extends Film implements Parcelable {
     public void setPlot(String plot){
         this.plot = plot;
     }
+
     public void setGenre(String genre){
         this.genre = genre;
     }
@@ -77,22 +105,4 @@ public class FilmEvent extends Film implements Parcelable {
         this.language = language;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        List<String> parcelParams = new ArrayList<>();
-        parcelParams.add(id);
-        parcelParams.add(title);
-        parcelParams.add(year);
-        parcelParams.add(posterURL);
-        parcelParams.add(plot);
-        parcelParams.add(genre);
-        parcelParams.add(language);
-
-        parcel.writeStringList(parcelParams);
-    }
 }

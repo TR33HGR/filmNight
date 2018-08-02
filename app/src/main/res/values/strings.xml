@@ -3,14 +3,34 @@
 
     <string name="searchFilmQ">What film do you want to watch?</string>
     <string name="searchGenreQ">If you don\'t have a specific film in mind, what genre of film do you want to watch?</string>
-    <string name="searchText">I want to watch </string>
-    <string name="searchText_alt">I want to watch a(n) </string>
-    <string name="searchGenreTag"> film!</string>
+    <string name="searchStatement">I want to watch </string>
+    <string name="searchStatement_alt">I want to watch a(n) </string>
+    <string name="searchStatementTag"> film!</string>
 
-    <string name="test">Lorem Ipsom</string>
-    <string name="selFilmInst">Select the film you are going to watch:</string>
-    <string name="selFilmInstTag">[This will auto-fill some event info]</string>
+    <string name="filmListInst">Select the film you are going to watch:</string>
+    <string name="filmListInstTag">[This will auto-fill some event info]</string>
 
-    <string name="filmNameFiller">Film Name</string>
-    <string name="filmYearFiller">Film Year</string>
+    <string name="filmNameFiller">Title</string>
+    <string name="filmYearFiller">Year</string>
+    <string name="filmPlotFiller">Plot</string>
+    <string name="filmGenreFiller">Genre</string>
+    <string name="filmLanguageFiller">Language</string>
+
+    <string name="enterName">What is your full name?</string>
+    <string name="enterAddress">What is your address?</string>
+    <string name="enterArrivalTime">When should people arrive?</string>
+    <string name="enterEventDate">What day is your film night?</string>
+    <string name="enterNumGuests">How many guest do you want?</string>
+
+    <string name="foodRadTitle">Food?</string>
+    <string name="drinkRadTitle">Drinks?</string>
+
+    <string name="no">No.</string>
+    <string name="byo">Bring your own.</string>
+    <string name="supplied">Will be supplied.</string>
+
+    <string name="vegetarianQ">Vegetarian?</string>
+    <string name="veganQ">Vegan?</string>
+    <string name="alcoholAllowed">Alcohol?</string>
+
 </resources>
