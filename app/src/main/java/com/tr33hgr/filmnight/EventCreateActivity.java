@@ -3,16 +3,19 @@ package com.tr33hgr.filmnight;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.tr33hgr.filmnight.filmhandlers.FilmEvent;
+import com.tr33hgr.filmnight.viewHandlers.FormAdapter;
 
 public class EventCreateActivity extends AppCompatActivity{
+
+    private RecyclerView.Adapter adapter;
+    private RecyclerView recyclerView;
+
+    FilmEvent filmEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -20,27 +23,22 @@ public class EventCreateActivity extends AppCompatActivity{
         setContentView(R.layout.activity_event_create);
 
         Intent intent = getIntent();
-        FilmEvent filmEvent = intent.getParcelableExtra("SELECTED_FILM");
+        filmEvent = intent.getParcelableExtra("SELECTED_FILM");
 
-        LinearLayout containerLayout = findViewById(R.id.eventCreate_container_layout);
+        setupRecyclerView();
+    }
 
-        TextView filmName = findViewById(R.id.eventCreate_filmTitle_txt);
-        TextView filmYear = findViewById(R.id.eventCreate_filmYear_txt);
-        TextView filmLanguage = findViewById(R.id.eventCreate_filmLanguage_txt);
-        TextView filmGenre = findViewById(R.id.eventCreate_filmGenre_txt);
-        TextView filmPlot = findViewById(R.id.eventCreate_filmPlot_txt);
-        ImageView posterView = findViewById(R.id.eventCreate_poster_img);
+    private void setupRecyclerView(){
+        recyclerView = findViewById(R.id.eventCreate_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        filmPlot.setMovementMethod(new ScrollingMovementMethod());
+        //give the adapter the local filmList
+        adapter = new FormAdapter(filmEvent);
 
-        RequestOptions options = new RequestOptions().error((R.mipmap.ic_launcher));
-        Glide.with(posterView.getContext()).load(filmEvent.getPosterURL()).apply(options).into(posterView);
-
-        filmName.setText(filmEvent.getTitle());
-        filmYear.setText(filmEvent.getYear());
-        filmLanguage.setText(filmEvent.getLanguage());
-        filmGenre.setText(filmEvent.getGenre());
-        filmPlot.setText(filmEvent.getPlot());
+        //link the adapter to the recyclerView
+        recyclerView.setAdapter(adapter);
     }
 }
 

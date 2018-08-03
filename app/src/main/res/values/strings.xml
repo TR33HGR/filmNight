@@ -22,6 +22,8 @@
     <string name="enterEventDate">What day is your film night?</string>
     <string name="enterNumGuests">How many guest do you want?</string>
 
+    <string name="ageRangeTitle">Select an age range.</string>
+
     <string name="foodRadTitle">Food?</string>
     <string name="drinkRadTitle">Drinks?</string>
 
@@ -32,5 +34,7 @@
     <string name="vegetarianQ">Vegetarian?</string>
     <string name="veganQ">Vegan?</string>
     <string name="alcoholAllowed">Alcohol?</string>
+
+    <string name="submit">Submit</string>
 
 </resources>

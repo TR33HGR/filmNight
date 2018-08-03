@@ -166,10 +166,8 @@ public class SearchFilmActivity extends AppCompatActivity {
 
     private void putFilmsInView(){
         setupCardAdapter();
-
-        //link the adapter to the recyclerView
-        recyclerView.setAdapter(adapter);
     }
+
     private void setupCardAdapter(){
         //give the adapter the local filmList
         adapter = new CardAdapter(filmList);
@@ -189,6 +187,9 @@ public class SearchFilmActivity extends AppCompatActivity {
 
         //set this activity to listen for a film (card) being selected
         onCardSelectListener = new OnCardSelectListener(this);
+
+        //link the adapter to the recyclerView
+        recyclerView.setAdapter(adapter);
     }
 
     //when the activity ends
