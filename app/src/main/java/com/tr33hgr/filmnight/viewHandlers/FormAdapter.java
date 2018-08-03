@@ -1,13 +1,14 @@
 package com.tr33hgr.filmnight.viewHandlers;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -40,6 +41,8 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.EventFormViewH
         EditText numGuests;
         TextView ageRangeTitle;
         RangeSeekBar ageRange;
+        EditText minAge;
+        EditText maxAge;
 
         TextView foodQView;
         TextView drinksQView;
@@ -75,6 +78,8 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.EventFormViewH
             this.numGuests = formView.findViewById(R.id.eventForm_numGuests_txt);
             this.ageRangeTitle = formView.findViewById(R.id.eventForm_ageRangeTitle_txt);
             this.ageRange = formView.findViewById(R.id.eventForm_ageRange_range);
+            this.minAge = formView.findViewById(R.id.eventForm_ageRangeMinSel_txt);
+            this.maxAge = formView.findViewById(R.id.eventForm_ageRangeMaxSel_txt);
 
             this.foodQView = formView.findViewById(R.id.eventForm_foodQ_txt);
             this.drinksQView = formView.findViewById(R.id.eventForm_drinksQ_txt);
@@ -121,21 +126,23 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.EventFormViewH
         EditText eventDate = holder.eventDate;
         EditText numGuests = holder.numGuests;
         TextView ageRangeTitle = holder.ageRangeTitle;
-        RangeSeekBar ageRange = holder.ageRange;
+        final RangeSeekBar ageRange = holder.ageRange;
+        final EditText minAge = holder.minAge;
+        final EditText maxAge = holder.maxAge;
 
         TextView foodQView = holder.foodQView;
         TextView drinksQView = holder.drinksQView;
         RadioGroup foodRadioGroup = holder.foodRadioGroup;
         RadioGroup drinksRadioGroup = holder.drinksRadioGroup;
-        RadioButton noFood = holder.noFood;
+        final RadioButton noFood = holder.noFood;
         RadioButton byoFood = holder.byoFood;
         RadioButton supFood = holder.supFood;
-        RadioButton noDrinks = holder.noDrinks;
+        final RadioButton noDrinks = holder.noDrinks;
         RadioButton byoDrinks = holder.byoDrinks;
         RadioButton supDrinks = holder.supDrinks;
-        CheckBox vegetarian = holder.vegetarian;
-        CheckBox vegan = holder.vegan;
-        CheckBox alcohol = holder.alcohol;
+        final CheckBox vegetarian = holder.vegetarian;
+        final CheckBox vegan = holder.vegan;
+        final CheckBox alcohol = holder.alcohol;
 
         Button submit = holder.submit;
 
@@ -149,6 +156,53 @@ public class FormAdapter extends RecyclerView.Adapter<FormAdapter.EventFormViewH
         filmGenreView.setText(filmEvent.getGenre());
         filmLanguageView.setText(filmEvent.getLanguage());
         filmPlotView.setText(filmEvent.getPlot());
+
+//TODO:https://android-arsenal.com/details/1/7063 find out how this works
+//        ageRange.setOnTouchListener(new View.OnTouchListener(){
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                minAge.setText(ageRange.getMinThumbValue());
+//                maxAge.setText(ageRange.getMaxThumbValue());
+//                return false;
+//            }
+//        });
+
+        vegetarian.setVisibility(View.GONE);
+        vegan.setVisibility(View.GONE);
+
+        foodRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if(noFood.isChecked() != true){
+                    vegetarian.setVisibility(View.VISIBLE);
+                    vegan.setVisibility(View.VISIBLE);
+                }else{
+                    vegetarian.setVisibility(View.GONE);
+                    vegan.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        alcohol.setVisibility(View.GONE);
+
+        drinksRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if(noDrinks.isChecked() != true){
+                    alcohol.setVisibility(View.VISIBLE);
+                }else{
+                    alcohol.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        submit.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                //TODO:send all info to a database https://developers.google.com/android/guides/overview
+            }
+        });
 
     }
 

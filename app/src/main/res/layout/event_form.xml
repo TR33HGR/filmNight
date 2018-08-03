@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/eventForm_container_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:focusedByDefault="true"
     android:orientation="vertical"
     android:scrollbars="vertical">
 
@@ -34,31 +38,51 @@
                     android:id="@+id/eventForm_filmTitle_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/filmNameFiller" />
+                    android:text="@string/filmNameFiller"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
-                <TextView
-                    android:id="@+id/eventForm_filmYear_txt"
+                <LinearLayout
+                    android:id="@+id/eventForm_filmDetails_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/filmYearFiller" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/eventForm_filmGenre_txt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/filmGenreFiller" />
+                    <LinearLayout
+                        android:id="@+id/eventForm_filmInfo_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/eventForm_filmLanguage_txt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/filmLanguageFiller" />
+                        <TextView
+                            android:id="@+id/eventForm_filmYear_txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/filmYearFiller" />
 
-                <TextView
-                    android:id="@+id/eventForm_filmPlot_txt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/filmPlotFiller" />
+                        <TextView
+                            android:id="@+id/eventForm_filmGenre_txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/filmGenreFiller" />
+
+                        <TextView
+                            android:id="@+id/eventForm_filmLanguage_txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/filmLanguageFiller" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/eventForm_filmPlot_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:scrollbars="horizontal"
+                        android:text="@string/filmPlotFiller" />
+
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/eventForm_hostName_txt"
@@ -66,35 +90,65 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="textPersonName"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:focusedByDefault="false"
                     android:text="Name" />
 
                 <EditText
                     android:id="@+id/eventForm_hostAddress_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minLines="4"
                     android:ems="10"
-                    android:inputType="textPostalAddress" />
+                    android:inputType="textPostalAddress"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="false"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:focusedByDefault="false"
+                    android:text="@string/enterAddress" />
 
                 <EditText
                     android:id="@+id/eventForm_numGuests_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:focusedByDefault="false"
+                    android:text="@string/enterNumGuests" />
 
                 <EditText
                     android:id="@+id/eventForm_eventTime_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="time" />
+                    android:inputType="time"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:focusedByDefault="false"
+                    android:text="@string/enterArrivalTime" />
 
                 <EditText
                     android:id="@+id/eventForm_eventDate_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="date" />
+                    android:inputType="date"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:focusedByDefault="false"
+                    android:text="@string/enterEventDate" />
 
                 <TextView
                     android:id="@+id/eventForm_ageRangeTitle_txt"
@@ -102,11 +156,38 @@
                     android:layout_height="wrap_content"
                     android:text="@string/ageRangeTitle" />
 
-                <com.innovattic.rangeseekbar.RangeSeekBar
-                    android:id="@+id/eventForm_ageRange_range"
+                <LinearLayout
+                    android:id="@+id/eventForm_ageRange_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorAccent" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/eventForm_ageRangeMinSel_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="8"
+                        android:layout_weight="2"
+                        android:inputType="number" />
+
+                    <com.innovattic.rangeseekbar.RangeSeekBar
+                        android:id="@+id/eventForm_ageRange_range"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:rsb_max="100"
+                        app:rsb_minRange="16"
+                        android:layout_weight="1"
+                        app:rsb_trackColor="@color/colorPrimary"
+                        app:rsb_trackSelectedColor="@color/colorPrimaryDark" />
+
+                    <EditText
+                        android:id="@+id/eventForm_ageRangeMaxSel_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="8"
+                        android:layout_weight="2"
+                        android:inputType="number" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/eventForm_foodQ_txt"
@@ -207,5 +288,3 @@
     </android.support.constraint.ConstraintLayout>
 
 </LinearLayout>
-
-    <!--https://android-arsenal.com/details/1/7063-->

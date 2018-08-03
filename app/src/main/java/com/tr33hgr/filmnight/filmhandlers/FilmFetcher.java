@@ -28,7 +28,7 @@ public class FilmFetcher {
     private String API_KEY = "&apikey=3e0fcb90";
     private String TYPE_COMMAND = "&type=movie";
     private String FORMAT_COMMAND = "&r=json";
-    private String PLOT_LENGTH_COMMAND = "&plot=full";
+    private String PLOT_LENGTH_COMMAND = "&plot=short";
     private String SEARCH_COMMAND = "s=";
     private String PAGE_COMMAND = "&page=";
     private String SEARCH_BY_ID = "i=";
