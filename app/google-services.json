@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "608308065553",
+    "firebase_url": "https://film-night-app.firebaseio.com",
+    "project_id": "film-night-app",
+    "storage_bucket": "film-night-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:608308065553:android:84fe10ca55dea99f",
+        "android_client_info": {
+          "package_name": "com.tr33hgr.filmnight"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "608308065553-e9prrpatf3rciokhdioap7ke86f8frmi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tr33hgr.filmnight",
+            "certificate_hash": "8d16c89fcb96ef594dbfe77a2fcf8adef90ee811"
+          }
+        },
+        {
+          "client_id": "608308065553-uirndg4ti7q499hkoo2eb5c5ncuvrjv7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHTAXC3Fz_PbgJqHiyBR1GF-ikVRHUuVE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "608308065553-uirndg4ti7q499hkoo2eb5c5ncuvrjv7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
