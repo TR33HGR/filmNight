@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".LoginActivity">
 
     <TextView
-        android:id="@+id/main_filmSearchQ_txt"
+        android:id="@+id/root_filmSearchQ_txt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -22,33 +22,33 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/main_filmSearchStatement_txt"
+        android:id="@+id/root_filmSearchStatement_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/searchStatement"
-        app:layout_constraintStart_toStartOf="@+id/main_filmSearchQ_txt"
-        app:layout_constraintTop_toBottomOf="@+id/main_filmSearchQ_txt" />
+        app:layout_constraintStart_toStartOf="@+id/root_filmSearchQ_txt"
+        app:layout_constraintTop_toBottomOf="@+id/root_filmSearchQ_txt" />
 
     <SearchView
-        android:id="@+id/main_filmSearch_srch"
+        android:id="@+id/root_filmSearch_srch"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/main_filmSearchStatement_txt"
-        app:layout_constraintEnd_toEndOf="@+id/main_filmSearchQ_txt"
+        app:layout_constraintBottom_toBottomOf="@+id/root_filmSearchStatement_txt"
+        app:layout_constraintEnd_toEndOf="@+id/root_filmSearchQ_txt"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/main_filmSearchStatement_txt"
-        app:layout_constraintTop_toTopOf="@+id/main_filmSearchStatement_txt"
+        app:layout_constraintStart_toEndOf="@+id/root_filmSearchStatement_txt"
+        app:layout_constraintTop_toTopOf="@+id/root_filmSearchStatement_txt"
         app:layout_constraintVertical_bias="0.0">
 
     </SearchView>
 
     <TextView
-        android:id="@+id/main_genreSearchQ_txt"
+        android:id="@+id/root_genreSearchQ_txt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -61,40 +61,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_filmSearchStatement_txt" />
+        app:layout_constraintTop_toBottomOf="@+id/root_filmSearchStatement_txt" />
 
     <TextView
-        android:id="@+id/main_genreSearchStatement_srch"
+        android:id="@+id/root_genreSearchStatement_srch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/searchStatement_alt"
-        app:layout_constraintStart_toStartOf="@+id/main_genreSearchQ_txt"
-        app:layout_constraintTop_toBottomOf="@+id/main_genreSearchQ_txt" />
+        app:layout_constraintStart_toStartOf="@+id/root_genreSearchQ_txt"
+        app:layout_constraintTop_toBottomOf="@+id/root_genreSearchQ_txt" />
 
     <SearchView
-        android:id="@+id/main_genreSearch_srch"
+        android:id="@+id/root_genreSearch_srch"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/main_genreSearchStatement_srch"
-        app:layout_constraintEnd_toStartOf="@+id/main_genreSearchStatmentTag_txt"
+        app:layout_constraintBottom_toBottomOf="@+id/root_genreSearchStatement_srch"
+        app:layout_constraintEnd_toStartOf="@+id/root_genreSearchStatmentTag_txt"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/main_genreSearchStatement_srch"
-        app:layout_constraintTop_toTopOf="@+id/main_genreSearchStatement_srch"
+        app:layout_constraintStart_toEndOf="@+id/root_genreSearchStatement_srch"
+        app:layout_constraintTop_toTopOf="@+id/root_genreSearchStatement_srch"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
-        android:id="@+id/main_genreSearchStatmentTag_txt"
+        android:id="@+id/root_genreSearchStatmentTag_txt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="@string/searchStatementTag"
-        app:layout_constraintBottom_toBottomOf="@+id/main_genreSearch_srch"
-        app:layout_constraintEnd_toEndOf="@+id/main_genreSearchQ_txt"
-        app:layout_constraintTop_toTopOf="@+id/main_genreSearch_srch"
+        app:layout_constraintBottom_toBottomOf="@+id/root_genreSearch_srch"
+        app:layout_constraintEnd_toEndOf="@+id/root_genreSearchQ_txt"
+        app:layout_constraintTop_toTopOf="@+id/root_genreSearch_srch"
         app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>
