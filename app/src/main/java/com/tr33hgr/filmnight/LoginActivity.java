@@ -1,8 +1,5 @@
 package com.tr33hgr.filmnight;
 
-import android.app.SearchManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -10,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.SearchView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -32,6 +28,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     int RC_SIGN_IN = 365;
     private FirebaseAuth mAuth;
 
+    SignInButton signInButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -45,8 +43,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        SignInButton signInButton = findViewById(R.id.login_signinButton_butt);
+        signInButton = findViewById(R.id.login_signinButton_butt);
         signInButton.setOnClickListener(this);
+        signInButton.setVisibility(View.INVISIBLE);
 
         mAuth = FirebaseAuth.getInstance();
     }
@@ -55,17 +54,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onStart() {
         super.onStart();
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        updateUI(account);
+        //GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        //updateUI(account);
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
 
     private void updateUI(FirebaseUser currentUser) {
+        if(currentUser != null){
+            signInButton.setVisibility(View.GONE);
+            getUserInfo();
+            Log.d("SIGNED IN", "Successful signin");
+            //TODO: start root activity
+        }else{
+            signInButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void getUserInfo() {
+        
     }
 
     private void updateUI(GoogleSignInAccount account) {
+        if(account != null){
+            signInButton.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
