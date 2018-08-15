@@ -7,3 +7,4 @@ Features:
 Google authentication w./ Firebase auth & Firestore (database),
 REST api via OMDb movie database (receiving movie info to auto fill film night info),
 JSON parsing of OMDb data,
+Geocoding with Google maps API
