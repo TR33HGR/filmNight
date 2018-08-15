@@ -2,8 +2,6 @@ package com.tr33hgr.filmnight;
 
 import android.content.Context;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.GeoPoint;
@@ -15,9 +13,6 @@ public class User {
     private int YEAR = 0;
     private int MONTH = 1;
     private int DAY = 2;
-
-    private int LAT = 0;
-    private int LONG = 1;
 
     private LocationFetcher locationFetcher;
 
@@ -84,14 +79,6 @@ public class User {
 
     private void findAddressLoc(String postCode){
         locationFetcher.queryLatLong(postCode);
-
-//        locationFetcher.getRequestQueue().addRequestFinishedListener(new RequestQueue.RequestFinishedListener() {
-////            @Override
-////            public void onRequestFinished(Request request) {
-////                double[] latLong = locationFetcher.getLatLong();
-////                addressLoc = new GeoPoint(latLong[LAT], latLong[LONG]);
-////            }
-////        });
     }
 
     private int[] formatDate(String dob) {

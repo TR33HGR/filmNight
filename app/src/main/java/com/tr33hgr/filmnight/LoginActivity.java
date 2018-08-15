@@ -26,6 +26,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -89,7 +90,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             signInButton.setVisibility(View.GONE);
             queryUser();
             Log.d("SIGNED IN", "Successful signin");
-            //TODO: start root activity
         }else{
             signInButton.setVisibility(View.VISIBLE);
         }
@@ -138,8 +138,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         female = findViewById(R.id.login_female_rad);
         submit = findViewById(R.id.login_submit_butt);
 
-        //submit.setVisibility(View.INVISIBLE);
-
         //set default profile pic image is error receiving from url
         RequestOptions options = new RequestOptions().error((R.mipmap.ic_launcher));
         //get profile pic from url
@@ -156,8 +154,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }else if(female.isChecked()){
                     gender = GlobalVars.FEMALE;
                 }
-
-                //submit.setVisibility(View.VISIBLE);
             }
         });
 
@@ -180,6 +176,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         GlobalVars.user.setAddressLoc(new GeoPoint(latLong[GlobalVars.LAT], latLong[GlobalVars.LONG]));
 
                         docRef.set(GlobalVars.user);
+
+                        Log.d("SET", GlobalVars.user.getName());
+
+                        beginApp();
                     }
                 });
 
@@ -191,7 +191,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    private void beginApp() {
+        Log.d("BEGIN", "Start app");
+        startActivity(new Intent(this, RootActivity.class));
+    }
+
     private void getUserInfo() {
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                GlobalVars.user = documentSnapshot.toObject(User.class);
+
+                Log.d("GET", GlobalVars.user.getEmail());
+
+                beginApp();
+            }
+        });
+
+
     }
 
 
