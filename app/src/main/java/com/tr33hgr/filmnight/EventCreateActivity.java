@@ -7,7 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.tr33hgr.filmnight.filmhandlers.FilmEvent;
+import com.tr33hgr.filmnight.filmHandlers.FilmEvent;
 import com.tr33hgr.filmnight.viewHandlers.FormAdapter;
 
 public class EventCreateActivity extends AppCompatActivity{

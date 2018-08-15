@@ -1,9 +1,7 @@
 package com.tr33hgr.filmnight.viewHandlers;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,7 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.innovattic.rangeseekbar.RangeSeekBar;
 import com.tr33hgr.filmnight.R;
-import com.tr33hgr.filmnight.filmhandlers.FilmEvent;
+import com.tr33hgr.filmnight.filmHandlers.FilmEvent;
 
 public class FormAdapter extends RecyclerView.Adapter<FormAdapter.EventFormViewHolder>{
 

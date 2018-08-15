@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.tr33hgr.filmnight.R;
 import com.tr33hgr.filmnight.SearchFilmActivity;
-import com.tr33hgr.filmnight.filmhandlers.Film;
+import com.tr33hgr.filmnight.filmHandlers.Film;
 
 import java.util.List;
 

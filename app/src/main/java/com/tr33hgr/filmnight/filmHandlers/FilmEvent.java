@@ -1,4 +1,4 @@
-package com.tr33hgr.filmnight.filmhandlers;
+package com.tr33hgr.filmnight.filmHandlers;
 
 import android.os.Parcel;
 import android.os.Parcelable;

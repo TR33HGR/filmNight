@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Film Night</string>
 
+    <string name="enterName">What is your full name?</string>
+    <string name="enterEmail">What is your email address?</string>
+    <string name="enterDOB">When were you born? (DD/MM/YYYY)</string>
+    <string name="enterHouseNumber">What is your house number/name?</string>
+    <string name="enterPostCode">What is your postcode?</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+
     <string name="searchFilmQ">What film do you want to watch?</string>
     <string name="searchGenreQ">If you don\'t have a specific film in mind, what genre of film do you want to watch?</string>
     <string name="searchStatement">I want to watch </string>
@@ -16,7 +24,7 @@
     <string name="filmGenreFiller">Genre</string>
     <string name="filmLanguageFiller">Language</string>
 
-    <string name="enterName">What is your full name?</string>
+
     <string name="enterAddress">What is your address?</string>
     <string name="enterArrivalTime">When should people arrive?</string>
     <string name="enterEventDate">What day is your film night?</string>

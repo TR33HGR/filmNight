@@ -13,8 +13,8 @@ import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.tr33hgr.filmnight.filmhandlers.Film;
-import com.tr33hgr.filmnight.filmhandlers.FilmFetcher;
+import com.tr33hgr.filmnight.filmHandlers.Film;
+import com.tr33hgr.filmnight.filmHandlers.FilmFetcher;
 import com.tr33hgr.filmnight.viewHandlers.CardAdapter;
 import com.tr33hgr.filmnight.viewHandlers.OnBottomReachedListener;
 

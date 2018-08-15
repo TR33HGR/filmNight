@@ -1,4 +1,4 @@
-package com.tr33hgr.filmnight.filmhandlers;
+package com.tr33hgr.filmnight.filmHandlers;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,6 +15,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.tr33hgr.filmnight.Fetcher;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,7 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FilmFetcher {
+public class FilmFetcher extends Fetcher {
     //constants for OMDb API search
     private String API_URL = "http://www.omdbapi.com/?";
     private String API_KEY = "&apikey=3e0fcb90";
@@ -33,38 +34,12 @@ public class FilmFetcher {
     private String PAGE_COMMAND = "&page=";
     private String SEARCH_BY_ID = "i=";
 
-    private Context context;
-
-    private RequestQueue requestQueue;
-
     private Film[] filmList;
     private FilmEvent selectedFilm;
 
-    private Gson parser;
-
     public FilmFetcher(Context context){
+        super(context);
 
-        //context from which this class was called
-        this.context = context;
-
-        //instantiate JSON parser
-        parser = new GsonBuilder().create();
-
-        //setup queue of queries for OMDb API
-        setupRequestQueue();
-    }
-
-    private void setupRequestQueue(){
-        //instantiate cache, 1MB cap
-        Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
-
-        //setup the network to use HttpURLConnection as the HTTP client
-        Network network = new BasicNetwork(new HurlStack());
-
-        //instantiate request queue of queries for OMDb API
-        requestQueue = new RequestQueue(cache, network);
-
-        requestQueue.start();
     }
 
     //formats general search query before starting search
@@ -151,18 +126,6 @@ public class FilmFetcher {
             }
 
         });
-    }
-
-    public void stop(){
-        //close request queue
-        if(requestQueue != null){
-            //close all requests tags with this context
-            requestQueue.cancelAll(this);
-        }
-    }
-
-    public RequestQueue getRequestQueue() {
-        return requestQueue;
     }
 
     public ArrayList<Film> getFilmList(){

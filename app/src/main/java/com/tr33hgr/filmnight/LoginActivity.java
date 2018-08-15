@@ -1,5 +1,6 @@
 package com.tr33hgr.filmnight;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -7,7 +8,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -21,6 +32,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,12 +43,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     int RC_SIGN_IN = 365;
     private FirebaseAuth mAuth;
 
+    FirebaseUser currentUser = null;
+
     SignInButton signInButton;
+    LinearLayout userInfoLayout;
+
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        context = this;
 
         setContentView(R.layout.activity_login);
 
@@ -47,6 +69,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         signInButton.setOnClickListener(this);
         signInButton.setVisibility(View.INVISIBLE);
 
+        userInfoLayout = findViewById(R.id.login_userInfo_layout);
+        userInfoLayout.setVisibility(View.INVISIBLE);
+
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -54,17 +79,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onStart() {
         super.onStart();
 
-        //GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        //updateUI(account);
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        currentUser = mAuth.getCurrentUser();
+        updateUI();
     }
 
-    private void updateUI(FirebaseUser currentUser) {
+    private void updateUI() {
         if(currentUser != null){
             signInButton.setVisibility(View.GONE);
-            getUserInfo();
+            queryUser();
             Log.d("SIGNED IN", "Successful signin");
             //TODO: start root activity
         }else{
@@ -72,15 +95,105 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void getUserInfo() {
-        
+    static DocumentReference docRef;
+
+    private void queryUser() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        docRef = db.collection("users").document(currentUser.getUid());
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        userInfoLayout.setVisibility(View.GONE);
+                        getUserInfo();
+                    } else {
+                        userInfoLayout.setVisibility(View.VISIBLE);
+                        setUserInfo();
+                    }
+                } else {
+                    Log.d("DATABASE ERROR", "database task unsuccessful" + task.getException());
+                }
+            }
+        });
     }
 
-    private void updateUI(GoogleSignInAccount account) {
-        if(account != null){
-            signInButton.setVisibility(View.INVISIBLE);
-        }
+    boolean gender;
+    Button submit;
+    RadioButton male;
+    RadioButton female;
+
+    private void setUserInfo() {
+        ImageButton userProfilePic = findViewById(R.id.login_userPic_img);
+        final EditText userName = findViewById(R.id.login_userName_txt);
+        final EditText userEmail = findViewById(R.id.login_userEmail_txt);
+        final EditText userDOB = findViewById(R.id.login_userDOB_txt);
+        final EditText userHouseNum = findViewById(R.id.login_houseNum_txt);
+        final EditText userPostCode = findViewById(R.id.login_postCode_txt);
+        RadioGroup userGender = findViewById(R.id.login_gender_radGroup);
+        male = findViewById(R.id.login_male_rad);
+        female = findViewById(R.id.login_female_rad);
+        submit = findViewById(R.id.login_submit_butt);
+
+        //submit.setVisibility(View.INVISIBLE);
+
+        //set default profile pic image is error receiving from url
+        RequestOptions options = new RequestOptions().error((R.mipmap.ic_launcher));
+        //get profile pic from url
+        Glide.with(userProfilePic.getContext()).load(currentUser.getPhotoUrl()).apply(options).into(userProfilePic);
+
+        userName.setText(currentUser.getDisplayName());
+        userEmail.setText(currentUser.getEmail());
+
+        userGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if(male.isChecked()){
+                    gender = GlobalVars.MALE;
+                }else if(female.isChecked()){
+                    gender = GlobalVars.FEMALE;
+                }
+
+                //submit.setVisibility(View.VISIBLE);
+            }
+        });
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GlobalVars.user = new User(context,
+                        userName.getText().toString(),
+                        userEmail.getText().toString(),
+                        userDOB.getText().toString(),
+                        userHouseNum.getText().toString(),
+                        userPostCode.getText().toString(),
+                        gender
+                );
+
+                GlobalVars.user.getLocationFetcher().getRequestQueue().addRequestFinishedListener(new RequestQueue.RequestFinishedListener() {
+                    @Override
+                    public void onRequestFinished(Request request) {
+                        double[] latLong = GlobalVars.user.getLocationFetcher().getLatLong();
+                        GlobalVars.user.setAddressLoc(new GeoPoint(latLong[GlobalVars.LAT], latLong[GlobalVars.LONG]));
+
+                        docRef.set(GlobalVars.user);
+                    }
+                });
+
+
+
+            }
+        });
+
+
     }
+
+    private void getUserInfo() {
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -114,7 +227,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } catch (ApiException e) {
 
             Log.w("SIGNIN FAILED", "signInResult:failed code=" + e.getStatusCode());
-            updateUI((GoogleSignInAccount)null);
+            updateUI();
         }
     }
 
@@ -128,12 +241,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d("FIREBASE SUCCESS", "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            currentUser = mAuth.getCurrentUser();
+                            updateUI();
                         } else {
                             Log.w("FIREBASE FAIL", "signInWithCredential:failure", task.getException());
                             Snackbar.make(findViewById(R.id.login_container_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            updateUI((FirebaseUser)null);
+                            updateUI();
                         }
                     }
                 });
